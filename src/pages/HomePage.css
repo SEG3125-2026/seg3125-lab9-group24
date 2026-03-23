@@ -1,0 +1,206 @@
+/* CSS for the main landing page */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  min-height: 88vh;
+  padding: 60px 80px;
+  gap: 40px;
+  background: var(--cream);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: rgba(139,26,26,0.04);
+  top: -100px;
+  right: -100px;
+}
+
+.hero__eyebrow {
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  color: var(--red);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.hero__title-sub {
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-style: normal;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.hero__tagline {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 36px;
+  line-height: 1.7;
+}
+
+.hero__actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hero__illustration {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero__circle {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: var(--red);
+  opacity: 0.08;
+}
+
+.hero__img {
+  width: 380px;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 200px 200px 160px 160px;
+  position: relative;
+  z-index: 1;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ── Locations ── */
+.locations__heading {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 2.2rem;
+  color: var(--red);
+  margin-bottom: 36px;
+}
+
+.locations__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.location-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.location-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.location-card__img-wrap {
+  position: relative;
+  height: 180px;
+}
+.location-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.location-card__badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--red);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.location-card__body {
+  padding: 20px;
+}
+.location-card__name {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.location-card__hours {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.location-card__hours span { font-weight: 700; color: var(--text); }
+
+/* ── Footer ── */
+.footer {
+  background: var(--red);
+  color: var(--white);
+  padding: 48px 80px;
+}
+.footer__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.footer__brand-script {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+.footer__brand-sub {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+.footer__label {
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin-bottom: 8px;
+}
+.footer__contact {
+  display: flex;
+  gap: 48px;
+  font-size: 0.9rem;
+}
+.footer__social {
+  display: flex;
+  gap: 16px;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; padding: 60px 24px; min-height: auto; text-align: center; }
+  .hero__actions { justify-content: center; }
+  .hero__illustration { display: none; }
+  .footer { padding: 40px 24px; }
+  .footer__contact { flex-direction: column; gap: 20px; }
+}
