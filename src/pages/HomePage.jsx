@@ -51,7 +51,8 @@ export default function HomePage() {
           </p>
           <div className="hero__actions">
             <Link to="/menu" className="btn-primary">{h.orderNow}</Link>
-            <a href="#locations" className="btn-outline">{h.ourLocations}</a>
+            <button className="btn-outline" onClick={() => document.getElementById("locations").scrollIntoView({ behavior: "smooth" })}>
+            {h.ourLocations} </button>
           </div>
         </div>
         <div className="hero__illustration">
