@@ -1,22 +1,64 @@
 // order summary page functionality
 
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLang } from "../LanguageContext";
 import "./OrderSummary.css";
+
+const API_BASE = "http://localhost:3001";
 
 export default function OrderSummary({ cart, clearCart, timeSlot }) {
   const navigate = useNavigate();
   const { t } = useLang();
   const o = t.order;
 
+  const [submitting, setSubmitting] = useState(false);
+  const [error,      setError]      = useState(null);
+  const [confirmed,  setConfirmed]  = useState(false);
+
   // calculate totals values for the order
   const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
   const tax      = subtotal * 0.13; // ontario sales tax
   const total    = subtotal + tax;
 
-  const handleConfirm = () => {
-    clearCart();
-    navigate("/");
+  const handleConfirm = async () => {
+    setSubmitting(true);
+    setError(null);
+
+    // Build the payload – item.id matches the seeded menu_item IDs (1-8)
+    const payload = {
+      location_id: 1,
+      pickup_time: timeSlot,
+      items: cart.map((item) => ({
+        item_id:    item.id,
+        quantity:   1,
+        size:       item.size,
+        shots:      item.shots,
+        milk:       item.milk,
+        line_total: item.price,
+      })),
+    };
+
+    try {
+      const res = await fetch(`${API_BASE}/api/orders`, {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Server error");
+      }
+
+      clearCart();
+      setConfirmed(true);
+    } catch (err) {
+      console.error("Order submission failed:", err);
+      setError("Could not save your order. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (cart.length === 0) {
@@ -101,11 +143,41 @@ export default function OrderSummary({ cart, clearCart, timeSlot }) {
             </div>
           </div>
 
-          <button className="btn-primary order-confirm-btn" onClick={handleConfirm}>
-            {o.confirm}
+          {error && (
+            <p style={{ color: "red", fontSize: "0.875rem", marginTop: "0.5rem" }}>
+              {error}
+            </p>
+          )}
+
+          <button
+            className="btn-primary order-confirm-btn"
+            onClick={handleConfirm}
+            disabled={submitting}
+          >
+            {submitting ? "Placing order…" : o.confirm}
           </button>
         </div>
       </div>
+
+      {/* Confirmation popup for confirming now that we have server */}
+      {confirmed && (
+        <div style={{
+          position: "fixed", inset: 0,
+          background: "rgba(0,0,0,0.5)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          zIndex: 1000
+        }}>
+          <div style={{
+            background: "white", borderRadius: "12px",
+            padding: "2rem", textAlign: "center", maxWidth: "320px", width: "90%"
+          }}>
+            <p style={{ fontSize: "2rem", margin: "0 0 0.5rem" }}>☕</p>
+            <h2 style={{ margin: "0 0 0.5rem" }}>Order Confirmed!</h2>
+            <p style={{ margin: "0 0 1.5rem", color: "#666" }}>Thanks!</p>
+            <button className="btn-primary" onClick={() => navigate("/")}>OK</button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
