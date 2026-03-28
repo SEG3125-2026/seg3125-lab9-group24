@@ -5,12 +5,16 @@ Images for the menu items are from: https://www.pexels.com
 
 ### note for team:
 cd server
+
 npm install
+
 npm run dev
 
 You should see: Coffee shop API running on http://localhost:3001
 
 in a new terminal:
-bashnpm install
+
+npm install
+
 npm run dev
 
